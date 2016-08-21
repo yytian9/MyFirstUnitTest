@@ -10,11 +10,13 @@ import com.example.yytian.myfirstunittest.BaseView;
  */
 public interface LoginContact  {
     interface Presenter extends BasePersenter {
-
+        void login(String usrName,String password);
     }
 
 
     interface View extends BaseView<Presenter>{
+        void setLoadingIndicator(boolean active);
+        void showLoginResult(String meg);
 
     }
 }

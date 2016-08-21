@@ -2,40 +2,57 @@ package com.example.yytian.myfirstunittest.login;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Button;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.yytian.myfirstunittest.R;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class MainActivity extends AppCompatActivity implements LoginContact.View {
 
-    @BindView(R.id.et_user_name)
     EditText mEtUserName;
-    @BindView(R.id.et_password)
     EditText mEtPassword;
-    @BindView(R.id.btn_login)
-    Button mBtnLogin;
-    @BindView(R.id.tv_loading_state)
     TextView mTvLoadingState;
+    TextView mTvLoginResult;
+    private LoginPresenter mLoginPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-        initView();
+
+        mLoginPresenter = new LoginPresenter(this);
+
+        mEtUserName= (EditText) findViewById(R.id.et_user_name);
+        mEtPassword= (EditText) findViewById(R.id.et_password);
+        mTvLoadingState= (TextView) findViewById(R.id.tv_loading_state);
+        mTvLoginResult= (TextView) findViewById(R.id.tv_login_result);
+
+        findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mLoginPresenter.login(mEtUserName.getText().toString().trim(),mEtPassword.getText().toString().trim());
+            }
+        });
     }
 
-    private void initView() {
-
-    }
 
     @Override
     public void setPresenter(LoginContact.Presenter presenter) {
 
+    }
+
+    @Override
+    public void setLoadingIndicator(boolean active) {
+        if(active){
+            mTvLoadingState.setText("Loading…………");
+        }else {
+            mTvLoadingState.setText("");
+        }
+    }
+
+    @Override
+    public void showLoginResult(String meg) {
+        mTvLoginResult.setText(meg);
     }
 }
