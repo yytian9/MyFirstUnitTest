@@ -1,17 +1,22 @@
-package com.example.yytian.myfirstunittest.login;
+package com.example.yytian.simplemocktest.login;
 
+
+import com.example.yytian.simplemocktest.BuildConfig;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
 
 /**
  * 创建者：     yytian
@@ -19,14 +24,16 @@ import static org.mockito.Matchers.*;
  * 描述：
  */
 @RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class LoginPresenterTest {
     @Mock
     private LoginManager mLoginManager;
 
     @Mock
-    private MainActivity mActivity;
+    private LoginContact.View mActivity;
 
-    @InjectMocks
+    @Captor
+    private ArgumentCaptor<LoginManager.LoginCallBack> mGetTaskCallbackCaptor;
     private LoginPresenter mLoginPresenter;
 
     @Before
@@ -42,9 +49,13 @@ public class LoginPresenterTest {
 
     @Test
     public void testLogin() throws Exception {
+        mLoginPresenter=new LoginPresenter(mActivity,mLoginManager);
+
 
         mLoginPresenter.login("yytian","123");
-        Mockito.verify(mLoginManager).login("yytian","123",any(LoginCallBack.class));
+
+        verify(mLoginManager).login(eq("yytian"),eq("123"),any(LoginManager.LoginCallBack.class));
+
     }
 
     @After

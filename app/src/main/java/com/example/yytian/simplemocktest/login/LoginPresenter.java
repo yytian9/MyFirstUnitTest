@@ -1,10 +1,4 @@
-package com.example.yytian.myfirstunittest.login;
-
-import android.text.TextUtils;
-import android.widget.Toast;
-
-import com.example.yytian.myfirstunittest.BaseApplication;
-
+package com.example.yytian.simplemocktest.login;
 
 /**
  * 创建者：     yytian
@@ -16,9 +10,9 @@ public class LoginPresenter implements LoginContact.Presenter {
     private LoginContact.View loginView;
     private LoginManager mLoginManager;
 
-    public LoginPresenter(LoginContact.View loginView) {
+    public LoginPresenter(LoginContact.View loginView,LoginManager loginManager) {
         this.loginView = loginView;
-        mLoginManager = new LoginManager();
+        mLoginManager = loginManager;
     }
 
     @Override
@@ -29,12 +23,9 @@ public class LoginPresenter implements LoginContact.Presenter {
     @Override
     public void login(final String usrName, final String password) {
         //0.先是进行本地验证
-        if (TextUtils.isEmpty(usrName)) {
-            Toast.makeText(BaseApplication.getApplication(), "用户名不能为空", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (TextUtils.isEmpty(password)) {
-            Toast.makeText(BaseApplication.getApplication(), "密码不能为空", Toast.LENGTH_SHORT).show();
+
+        if (isNull(usrName)||isNull(password)) {
+            loginView.showErrorView();
             return;
         }
 
@@ -42,10 +33,10 @@ public class LoginPresenter implements LoginContact.Presenter {
         loginView.setLoadingIndicator(true);
 
 
-        mLoginManager.login(usrName, password, new LoginCallBack() {
+        mLoginManager.login(usrName, password, new LoginManager.LoginCallBack() {
             @Override
             public void loginSucessed() {
-                Toast.makeText(BaseApplication.getApplication(), "登录成功", Toast.LENGTH_SHORT).show();
+
                 //显示登录结果
                 loginView.showLoginResult("登录成功");
                 loginView.setLoadingIndicator(false);
@@ -53,12 +44,19 @@ public class LoginPresenter implements LoginContact.Presenter {
 
             @Override
             public void loginFailed() {
-                Toast.makeText(BaseApplication.getApplication(), "用户名或密码错误，请重新输入", Toast.LENGTH_SHORT).show();
+                loginView.showSuccessView();
                 //显示登录结果
                 loginView.showLoginResult("登录失败");
                 loginView.setLoadingIndicator(false);
             }
         });
 
+    }
+
+    private boolean isNull(String str){
+        if(str==null || str.length()==0){
+            return true;
+        }
+        return false;
     }
 }

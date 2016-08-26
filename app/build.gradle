@@ -10,6 +10,8 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -21,14 +23,33 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    //app lib
+    compile 'com.android.support:appcompat-v7:24.0.0'
+    compile 'com.jakewharton:butterknife:8.2.1'
+
+
+
+    //Rxjava
+    compile 'io.reactivex.rxjava2:rxjava:2.0.0-RC1'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    //retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:retrofit-converters:2.1.0'
+    compile 'com.squareup.retrofit2:retrofit-adapters:2.1.0'
+
+
     //test lib
     testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.9.5'
     testCompile 'org.robolectric:robolectric:3.1.2'
+    testCompile 'org.mockito:mockito-all:2.0.2-beta'
 
-    //support lib
-    compile 'com.android.support:appcompat-v7:24.0.0'
+    //Ui test
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile 'com.android.support.test:runner:0.5'
 
-    //others
-    compile 'com.jakewharton:butterknife:8.2.1'
+    // Resolve conflicts between main and test APK:
+    androidTestCompile "com.android.support:support-annotations:24.0.0"
+    androidTestCompile "com.android.support:support-v4:24.0.0"
+    androidTestCompile "com.android.support:recyclerview-v7:24.0.0"
+
 }

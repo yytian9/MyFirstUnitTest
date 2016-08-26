@@ -1,7 +1,7 @@
-package com.example.yytian.myfirstunittest.login;
+package com.example.yytian.simplemocktest.login;
 
-import com.example.yytian.myfirstunittest.BasePersenter;
-import com.example.yytian.myfirstunittest.BaseView;
+import com.example.yytian.simplemocktest.BasePersenter;
+import com.example.yytian.simplemocktest.BaseView;
 
 /**
  * 创建者：     yytian
@@ -17,6 +17,7 @@ public interface LoginContact  {
     interface View extends BaseView<Presenter>{
         void setLoadingIndicator(boolean active);
         void showLoginResult(String meg);
-
+        void showErrorView();
+        void showSuccessView();
     }
 }

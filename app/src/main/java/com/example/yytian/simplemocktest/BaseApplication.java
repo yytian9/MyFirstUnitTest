@@ -1,4 +1,4 @@
-package com.example.yytian.myfirstunittest;
+package com.example.yytian.simplemocktest;
 
 import android.app.Application;
 import android.os.Handler;
@@ -6,11 +6,7 @@ import android.os.Handler;
 /**
  * 创建者：     yytian
  * 创建时间：   16-8-21 下午12:03
- * 描述：	   ${TODO}
- * --------------------------
- * 更新者：     $Author: admin
- * 更新时间：   16-8-21
- * 更新描述：   ${TODO}
+ * 描述：
  */
 public class BaseApplication extends Application {
 

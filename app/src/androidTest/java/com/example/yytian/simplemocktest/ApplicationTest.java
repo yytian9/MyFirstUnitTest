@@ -1,4 +1,4 @@
-package com.example.yytian.myfirstunittest;
+package com.example.yytian.simplemocktest;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
