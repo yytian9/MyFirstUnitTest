@@ -80,4 +80,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <Button
+        android:id="@+id/btn_retrofit"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tv_login_result"
+        android:text="Retrofit"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"/>
+
 </RelativeLayout>

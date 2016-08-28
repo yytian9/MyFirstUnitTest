@@ -9,6 +9,13 @@ import android.widget.Toast;
 
 import com.example.yytian.simplemocktest.BaseApplication;
 import com.example.yytian.simplemocktest.R;
+import com.example.yytian.simplemocktest.data.api.ApiService;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements LoginContact.View {
 
@@ -18,29 +25,61 @@ public class MainActivity extends AppCompatActivity implements LoginContact.View
     TextView mTvLoginResult;
     private LoginPresenter mLoginPresenter;
 
+    private static final java.lang.String ENDPOINT = "http://ip.taobao.com/";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mLoginPresenter = new LoginPresenter(this,new LoginManager());
+        mLoginPresenter = new LoginPresenter(this, new LoginManager());
 
-        mEtUserName= (EditText) findViewById(R.id.et_user_name);
-        mEtPassword= (EditText) findViewById(R.id.et_password);
-        mTvLoadingState= (TextView) findViewById(R.id.tv_loading_state);
-        mTvLoginResult= (TextView) findViewById(R.id.tv_login_result);
+        mEtUserName = (EditText) findViewById(R.id.et_user_name);
+        mEtPassword = (EditText) findViewById(R.id.et_password);
+        mTvLoadingState = (TextView) findViewById(R.id.tv_loading_state);
+        mTvLoginResult = (TextView) findViewById(R.id.tv_login_result);
 
         findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mLoginPresenter.login(mEtUserName.getText().toString().trim(),mEtPassword.getText().toString().trim());
+                mLoginPresenter.login(mEtUserName.getText().toString().trim(), mEtPassword.getText().toString().trim());
             }
         });
 
         findViewById(R.id.btn_retrofit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+                retrofit_test();
+            }
+        });
+    }
+
+    /**
+     * a simple test for retrofit
+     */
+    private void retrofit_test() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ENDPOINT)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build();
+        ApiService apiService = retrofit.create(ApiService.class);
+
+
+        Call<String> call = apiService.getIpInfo("21.22.11.33");
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+
+
+                String body = response.body();
+                String result = body.toString();
+                Toast.makeText(MainActivity.this, result,Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+                Toast.makeText(MainActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -53,15 +92,15 @@ public class MainActivity extends AppCompatActivity implements LoginContact.View
 
     @Override
     public void setLoadingIndicator(boolean active) {
-        if(active){
+        if (active) {
             mTvLoadingState.setText("Loading…………");
-        }else {
+        } else {
             mTvLoadingState.setText("");
         }
     }
 
     @Override
-    public void showLoginResult(String meg) {
+    public void showLoginResult(java.lang.String meg) {
         mTvLoginResult.setText(meg);
     }
 
