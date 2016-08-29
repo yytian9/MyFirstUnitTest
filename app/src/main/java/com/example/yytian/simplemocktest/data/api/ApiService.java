@@ -10,5 +10,5 @@ import retrofit2.http.Query;
  */
 public interface ApiService {
     @GET("service/getIpInfo.php")
-    Call<java.lang.String> getIpInfo(@Query("ip") java.lang.String ip);
+    Call<String> getIpInfo(@Query("ip") String ip);
 }
