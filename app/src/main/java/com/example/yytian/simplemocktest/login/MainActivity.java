@@ -13,6 +13,11 @@ import com.example.yytian.simplemocktest.R;
 import com.example.yytian.simplemocktest.data.api.ApiService;
 import com.example.yytian.simplemocktest.data.api.UpdateApi;
 import com.example.yytian.simplemocktest.data.bean.UpdateInfo;
+import com.example.yytian.simplemocktest.data.bean.User;
+import com.example.yytian.simplemocktest.data.ormlite.DatabaseHelper;
+import com.j256.ormlite.dao.Dao;
+
+import java.sql.SQLException;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -71,6 +76,27 @@ public class MainActivity extends AppCompatActivity implements LoginContact.View
                 rxjava_test();
             }
         });
+
+        findViewById(R.id.btn_ormlite).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ormlite_test();
+            }
+        });
+    }
+
+    /**
+     * a simple test for ormlite
+     */
+    private void ormlite_test() {
+        try {
+            DatabaseHelper helper = DatabaseHelper.getHelper(BaseApplication.getApplication());
+            Dao<User, Integer> userDao = helper.getUserDao();
+            userDao.create(new User("yytian", "帅哥"));
+            userDao.create(new User("tian", "宅男"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

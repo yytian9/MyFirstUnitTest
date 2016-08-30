@@ -112,5 +112,14 @@
             android:layout_marginTop="20dp"
             android:text="网络请求的结果："/>
 
+        <Button
+            android:id="@+id/btn_ormlite"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_http_result_show"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="ormliteText"/>
+
     </RelativeLayout>
 </ScrollView>
