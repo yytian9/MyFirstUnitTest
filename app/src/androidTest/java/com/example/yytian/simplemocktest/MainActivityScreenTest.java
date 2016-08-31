@@ -4,7 +4,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import com.example.yytian.simplemocktest.login.MainActivity;
+import com.example.yytian.simplemocktest.activity.MainActivity;
 
 import org.junit.Rule;
 import org.junit.Test;

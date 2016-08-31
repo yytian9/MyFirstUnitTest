@@ -1,5 +1,6 @@
-package com.example.yytian.simplemocktest.login;
+package com.example.yytian.simplemocktest.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,6 +16,9 @@ import com.example.yytian.simplemocktest.data.api.UpdateApi;
 import com.example.yytian.simplemocktest.data.bean.UpdateInfo;
 import com.example.yytian.simplemocktest.data.bean.User;
 import com.example.yytian.simplemocktest.data.ormlite.DatabaseHelper;
+import com.example.yytian.simplemocktest.login.LoginContact;
+import com.example.yytian.simplemocktest.login.LoginManager;
+import com.example.yytian.simplemocktest.login.LoginPresenter;
 import com.example.yytian.simplemocktest.retrofit.BaseEntity;
 import com.example.yytian.simplemocktest.retrofit.HBRequestApi;
 import com.example.yytian.simplemocktest.retrofit.UpdateInfoData;
@@ -92,6 +96,12 @@ public class MainActivity extends AppCompatActivity implements LoginContact.View
             @Override
             public void onClick(View view) {
                 rxjava_packaged_test();
+            }
+        });
+        findViewById(R.id.btn_to_widget_activity).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,WidgetActivity.class));
             }
         });
 
