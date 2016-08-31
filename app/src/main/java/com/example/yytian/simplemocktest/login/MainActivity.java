@@ -15,6 +15,10 @@ import com.example.yytian.simplemocktest.data.api.UpdateApi;
 import com.example.yytian.simplemocktest.data.bean.UpdateInfo;
 import com.example.yytian.simplemocktest.data.bean.User;
 import com.example.yytian.simplemocktest.data.ormlite.DatabaseHelper;
+import com.example.yytian.simplemocktest.retrofit.BaseEntity;
+import com.example.yytian.simplemocktest.retrofit.HBRequestApi;
+import com.example.yytian.simplemocktest.retrofit.UpdateInfoData;
+import com.google.gson.Gson;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
@@ -29,6 +33,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity implements LoginContact.View {
@@ -83,6 +88,59 @@ public class MainActivity extends AppCompatActivity implements LoginContact.View
                 ormlite_test();
             }
         });
+        findViewById(R.id.btn_rxjava_packaged).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rxjava_packaged_test();
+            }
+        });
+
+    }
+
+    /**
+     * 对rxjava进行封装的测试
+     */
+    private void rxjava_packaged_test() {
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+
+        Retrofit retrofit=new Retrofit.Builder()
+                .client(okHttpClient)
+                .baseUrl(RXJAVA_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+//        HBRequestApi requestApi = HBRxjavaService.createService(HBRequestApi.class);
+
+        HBRequestApi requestApi = retrofit.create(HBRequestApi.class);
+
+        requestApi.httpGetRequest("82101","","11111111111")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Func1<BaseEntity, UpdateInfoData>() {
+                    @Override
+                    public UpdateInfoData call(BaseEntity baseEntity) {
+                        return new Gson().fromJson(baseEntity.data.toString(),UpdateInfoData.class);
+                    }
+                })
+                .subscribe(new Observer<UpdateInfoData>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.i("hhhhhh","2222");
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        throwable.printStackTrace();
+                        Log.i("hhhhhh",throwable.toString());
+                    }
+
+                    @Override
+                    public void onNext(UpdateInfoData data) {
+                        Log.i("hhhhhh",data.toString());
+                    }
+                });
     }
 
     /**

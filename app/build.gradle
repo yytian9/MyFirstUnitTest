@@ -51,4 +51,5 @@ dependencies {
     androidTestCompile 'com.android.support:recyclerview-v7:24.0.0'
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.j256.ormlite:ormlite-core:5.0'
+    compile 'com.google.code.gson:gson:2.7'
 }
