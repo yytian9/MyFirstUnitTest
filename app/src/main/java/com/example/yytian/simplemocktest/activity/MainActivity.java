@@ -25,6 +25,7 @@ import com.example.yytian.simplemocktest.retrofit.BaseEntity_copy;
 import com.example.yytian.simplemocktest.retrofit.HBRequestApi;
 import com.example.yytian.simplemocktest.retrofit.HBRequestApi_copy;
 import com.example.yytian.simplemocktest.retrofit.HBRxjavaService;
+import com.example.yytian.simplemocktest.retrofit.RxTransformHelper;
 import com.example.yytian.simplemocktest.retrofit.UpdateInfoData;
 import com.google.gson.Gson;
 import com.j256.ormlite.dao.Dao;
@@ -99,7 +100,8 @@ public class MainActivity extends AppCompatActivity implements LoginContact.View
         findViewById(R.id.btn_rxjava_packaged).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                rxjava_packaged_test();
+//                rxjava_packaged_test();
+                rxjava_packaged_test_copy2();
             }
         });
         findViewById(R.id.btn_to_widget_activity).setOnClickListener(new View.OnClickListener() {
@@ -132,7 +134,9 @@ public class MainActivity extends AppCompatActivity implements LoginContact.View
                 .map(new Func1<BaseEntity, UpdateInfoData>() {
                     @Override
                     public UpdateInfoData call(BaseEntity baseEntity) {
-                        return new Gson().fromJson(baseEntity.data.toString(),UpdateInfoData.class);
+
+                        //TODO  下面可能会抛出解析异常，想下怎么处理
+                        return new Gson().fromJson(baseEntity.data.toString(), UpdateInfoData.class);
                     }
                 })
                 .subscribe(new Observer<UpdateInfoData>() {
@@ -152,6 +156,70 @@ public class MainActivity extends AppCompatActivity implements LoginContact.View
                         Log.i("hhhhhh",data.toString());
                     }
                 });
+    }
+    /**
+     * 实体类是jsonObject的尝试
+     */
+    private void rxjava_packaged_test_copy2() {
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+        Retrofit retrofit=new Retrofit.Builder()
+                .client(okHttpClient)
+                .baseUrl(RXJAVA_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        HBRequestApi requestApi = retrofit.create(HBRequestApi.class);
+
+        requestApi.httpGetRequest("82101","","11111111111")
+                .compose(RxTransformHelper.handleResult(UpdateInfo_copy.class))
+                .subscribe(new Observer<UpdateInfo_copy>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(UpdateInfo_copy updateInfo_copy) {
+                        Log.i("hhhhhh",updateInfo_copy.toString());
+                    }
+                });
+/*
+        requestApi.httpGetRequest("82101","","11111111111")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Func1<BaseEntity, UpdateInfoData>() {
+                    @Override
+                    public UpdateInfoData call(BaseEntity baseEntity) {
+
+                        //TODO  下面可能会抛出解析异常，想下怎么处理
+                        return new Gson().fromJson(baseEntity.data.toString(), UpdateInfoData.class);
+                    }
+                })
+                .subscribe(new Observer<UpdateInfoData>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.i("hhhhhh","2222");
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        throwable.printStackTrace();
+                        Log.i("hhhhhh",throwable.toString());
+                    }
+
+                    @Override
+                    public void onNext(UpdateInfoData data) {
+                        Log.i("hhhhhh",data.toString());
+                    }
+                });
+*/
     }
     /**
      * this scheme can't be effect,since the request's method of retrofit can't be generics
