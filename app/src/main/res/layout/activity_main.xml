@@ -128,7 +128,7 @@
             android:layout_below="@id/btn_rxjava_packaged"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="rxjava的封装"/>
+            android:text="跳到第二个界面"/>
 
 
         <TextView

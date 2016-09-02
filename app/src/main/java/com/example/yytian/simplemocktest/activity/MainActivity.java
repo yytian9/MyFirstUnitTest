@@ -14,13 +14,17 @@ import com.example.yytian.simplemocktest.R;
 import com.example.yytian.simplemocktest.data.api.ApiService;
 import com.example.yytian.simplemocktest.data.api.UpdateApi;
 import com.example.yytian.simplemocktest.data.bean.UpdateInfo;
+import com.example.yytian.simplemocktest.data.bean.UpdateInfo_copy;
 import com.example.yytian.simplemocktest.data.bean.User;
 import com.example.yytian.simplemocktest.data.ormlite.DatabaseHelper;
 import com.example.yytian.simplemocktest.login.LoginContact;
 import com.example.yytian.simplemocktest.login.LoginManager;
 import com.example.yytian.simplemocktest.login.LoginPresenter;
 import com.example.yytian.simplemocktest.retrofit.BaseEntity;
+import com.example.yytian.simplemocktest.retrofit.BaseEntity_copy;
 import com.example.yytian.simplemocktest.retrofit.HBRequestApi;
+import com.example.yytian.simplemocktest.retrofit.HBRequestApi_copy;
+import com.example.yytian.simplemocktest.retrofit.HBRxjavaService;
 import com.example.yytian.simplemocktest.retrofit.UpdateInfoData;
 import com.google.gson.Gson;
 import com.j256.ormlite.dao.Dao;
@@ -113,6 +117,48 @@ public class MainActivity extends AppCompatActivity implements LoginContact.View
     private void rxjava_packaged_test() {
 
         OkHttpClient okHttpClient = new OkHttpClient();
+        Retrofit retrofit=new Retrofit.Builder()
+                .client(okHttpClient)
+                .baseUrl(RXJAVA_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        HBRequestApi requestApi = retrofit.create(HBRequestApi.class);
+
+        requestApi.httpGetRequest("82101","","11111111111")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Func1<BaseEntity, UpdateInfoData>() {
+                    @Override
+                    public UpdateInfoData call(BaseEntity baseEntity) {
+                        return new Gson().fromJson(baseEntity.data.toString(),UpdateInfoData.class);
+                    }
+                })
+                .subscribe(new Observer<UpdateInfoData>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.i("hhhhhh","2222");
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        throwable.printStackTrace();
+                        Log.i("hhhhhh",throwable.toString());
+                    }
+
+                    @Override
+                    public void onNext(UpdateInfoData data) {
+                        Log.i("hhhhhh",data.toString());
+                    }
+                });
+    }
+    /**
+     * this scheme can't be effect,since the request's method of retrofit can't be generics
+     */
+    private void rxjava_packaged_test_copy() {
+
+        OkHttpClient okHttpClient = new OkHttpClient();
 
         Retrofit retrofit=new Retrofit.Builder()
                 .client(okHttpClient)
@@ -121,10 +167,38 @@ public class MainActivity extends AppCompatActivity implements LoginContact.View
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
 
-//        HBRequestApi requestApi = HBRxjavaService.createService(HBRequestApi.class);
 
-        HBRequestApi requestApi = retrofit.create(HBRequestApi.class);
+        HBRequestApi_copy requestApiCopy = retrofit.create(HBRequestApi_copy.class);
 
+        requestApiCopy.httpGetRequest("82101","","11111111111",UpdateInfo_copy.class)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseEntity_copy<UpdateInfo_copy>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseEntity_copy<UpdateInfo_copy> updateInfo) {
+                        Log.i("yytian",updateInfo.toString());
+                    }
+                });
+    }
+
+
+    /**
+     * save for the method,this request will course a 504 http error,the logcat show:
+     *  retrofit2.adapter.rxjava.HttpException: HTTP 504 Unsatisfiable Request (only-if-cached)
+     *  fix it when time is free
+     */
+    private void _rxjava_packaged_test() {
+        HBRequestApi requestApi = HBRxjavaService.createService(HBRequestApi.class);
         requestApi.httpGetRequest("82101","","11111111111")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
