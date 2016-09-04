@@ -190,36 +190,6 @@ public class MainActivity extends AppCompatActivity implements LoginContact.View
                         Log.i("hhhhhh",updateInfo_copy.toString());
                     }
                 });
-/*
-        requestApi.httpGetRequest("82101","","11111111111")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map(new Func1<BaseEntity, UpdateInfoData>() {
-                    @Override
-                    public UpdateInfoData call(BaseEntity baseEntity) {
-
-                        //TODO  下面可能会抛出解析异常，想下怎么处理
-                        return new Gson().fromJson(baseEntity.data.toString(), UpdateInfoData.class);
-                    }
-                })
-                .subscribe(new Observer<UpdateInfoData>() {
-                    @Override
-                    public void onCompleted() {
-                        Log.i("hhhhhh","2222");
-                    }
-
-                    @Override
-                    public void onError(Throwable throwable) {
-                        throwable.printStackTrace();
-                        Log.i("hhhhhh",throwable.toString());
-                    }
-
-                    @Override
-                    public void onNext(UpdateInfoData data) {
-                        Log.i("hhhhhh",data.toString());
-                    }
-                });
-*/
     }
     /**
      * this scheme can't be effect,since the request's method of retrofit can't be generics

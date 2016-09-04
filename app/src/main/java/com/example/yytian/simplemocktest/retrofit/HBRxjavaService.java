@@ -1,6 +1,7 @@
 package com.example.yytian.simplemocktest.retrofit;
 
 import com.example.yytian.simplemocktest.BaseApplication;
+import com.example.yytian.simplemocktest.utils.NetworkUtils;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -49,17 +50,22 @@ public class HBRxjavaService {
         public Response intercept(Chain chain) throws IOException {
             Request request = chain.request();
 
+            if (!NetworkUtils.isNetworkConnected(BaseApplication.getApplication())) {
                 request = request.newBuilder()
                         .cacheControl(CacheControl.FORCE_CACHE)
                         .build();
+            }
 
             Response originalResponse = chain.proceed(request);
 
+            if (NetworkUtils.isNetworkConnected(BaseApplication.getApplication())) {
                 String cacheControl = request.cacheControl().toString();
                 return originalResponse.newBuilder()
                         .header("Cache-Control", cacheControl)
                         .removeHeader("Pragma")
                         .build();
+            }
+            return originalResponse;
         }
     }
 
