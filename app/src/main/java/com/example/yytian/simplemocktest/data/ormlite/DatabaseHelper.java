@@ -52,13 +52,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
      * @param context
      * @return
      */
-    public static synchronized DatabaseHelper getHelper(Context context)
-    {
+    public static synchronized DatabaseHelper getHelper(Context context) {
         context = context.getApplicationContext();
-        if (instance == null)
-        {
-            synchronized (DatabaseHelper.class)
-            {
+        if (instance == null) {
+            synchronized (DatabaseHelper.class) {
                 if (instance == null)
                     instance = new DatabaseHelper(context);
             }
@@ -74,11 +71,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
      * @return
      * @throws SQLException
      */
-    public Dao<User, Integer> getUserDao() throws SQLException
-    {
-        if (mUserDao == null)
-        {
-            mUserDao = getDao(User.class);
+    public Dao<User, Integer> getUserDao() throws SQLException {
+        if (mUserDao == null) {
+            mUserDao = instance.getDao(User.class);
         }
         return mUserDao;
     }
@@ -87,8 +82,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
      * 释放资源
      */
     @Override
-    public void close()
-    {
+    public void close() {
         super.close();
         mUserDao = null;
     }

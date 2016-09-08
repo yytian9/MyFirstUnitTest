@@ -18,6 +18,8 @@ public class User {
     @DatabaseField(columnName = "desc")
     private String desc;
 
+    public User() {
+    }
 
     public User(String name, String desc) {
         this.name = name;
