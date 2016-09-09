@@ -20,6 +20,14 @@ public class User {
 
     public User() {
     }
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", desc='" + desc + '\'' +
+                '}';
+    }
 
     public User(String name, String desc) {
         this.name = name;

@@ -1,9 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.yytian.simplemocktest.activity.RxjavaActivity">
+    <Button
+        android:id="@+id/btn_merge_rxjava_"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="rxjava_merge"/>
+    <Button
+        android:id="@+id/btn_rxjava_packaged"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="rxjava_package"/>
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/tv_result"
+        android:textColor="@color/black"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_merge_rxjava_"
+        android:layout_marginTop="20dp"
+        android:text="result："/>
+    <TextView
+        android:id="@+id/tv_result_show"
+        android:textColor="@color/black"
+        android:layout_marginLeft="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
